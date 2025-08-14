@@ -3,8 +3,11 @@ import { useState } from 'react'
 function Booking() {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState('')
+  const [selectedTime, setSelectedTime] = useState('')
   const [showForm, setShowForm] = useState(false)
   const [projectDetails, setProjectDetails] = useState('')
+  
+  const availableTimes = ['10:00 AM', '12:00 PM']
 
   const renderCalendar = () => {
     const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay()
@@ -57,8 +60,13 @@ function Booking() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    alert(`Appointment booked for ${selectedDate}!\nProject: ${projectDetails}`)
+    if (!selectedTime) {
+      alert('Please select a time slot.')
+      return
+    }
+    alert(`Appointment booked for ${selectedDate} at ${selectedTime}!\nProject: ${projectDetails}`)
     setProjectDetails('')
+    setSelectedTime('')
     setShowForm(false)
   }
 
@@ -107,10 +115,29 @@ function Booking() {
               <h3 className="text-2xl font-bold text-gray-900">Appointment Details</h3>
               <p className="mt-2 text-lg text-gray-600">
                 You have selected <span className="font-bold text-indigo-600">{selectedDate}</span>. 
-                Please fill out the form below to confirm your appointment.
+                Please select a time slot and fill out the form below to confirm your appointment.
               </p>
               
               <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Select Time</label>
+                  <div className="mt-2 grid grid-cols-2 gap-3">
+                    {availableTimes.map((time) => (
+                      <button
+                        key={time}
+                        type="button"
+                        onClick={() => setSelectedTime(time)}
+                        className={`p-3 rounded-lg border-2 transition-colors ${
+                          selectedTime === time
+                            ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
+                            : 'border-gray-300 hover:border-indigo-300'
+                        }`}
+                      >
+                        {time}
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Project Details</label>
                   <textarea
