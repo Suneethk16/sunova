@@ -6,14 +6,11 @@ export default function Booking() {
   const [selectedService, setSelectedService] = useState('')
   const [selectedDate, setSelectedDate] = useState('')
   const [selectedTime, setSelectedTime] = useState('')
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    company: '',
-    description: ''
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
+
+  const [showForm, setShowForm] = useState(false)
+  const [projectDetails, setProjectDetails] = useState('')
+  
+  const availableTimes = ['10:00 AM', '12:00 PM']
 
   const services = [
     {
@@ -39,10 +36,7 @@ export default function Booking() {
     }
   ]
 
-  const timeSlots = [
-    '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM',
-    '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM'
-  ]
+
 
   const handleInputChange = (e) => {
     setFormData({
@@ -53,27 +47,7 @@ export default function Booking() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!selectedService || !selectedDate || !selectedTime) {
-      alert('Please fill in all required fields')
-      return
-    }
-    
-    setIsSubmitting(true)
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    setIsSubmitting(false)
-    setIsSubmitted(true)
-    
-    // Reset form after 5 seconds
-    setTimeout(() => {
-      setIsSubmitted(false)
-      setSelectedService('')
-      setSelectedDate('')
-      setSelectedTime('')
-      setFormData({ name: '', email: '', company: '', description: '' })
-    }, 5000)
+
   }
 
   const getMinDate = () => {
@@ -227,18 +201,7 @@ export default function Booking() {
             </div>
           </motion.div>
 
-          {/* Right Column - Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <div className="glass-card">
-              <h3 className="text-xl font-semibold text-white mb-6 flex items-center">
-                <Users className="w-6 h-6 mr-3 text-neon-blue" />
-                Project Details
-              </h3>
+
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -274,25 +237,7 @@ export default function Booking() {
                   </div>
                 </div>
                 
-                <div>
-                  <label htmlFor="company" className="block text-sm font-medium text-white/80 mb-2">
-                    Company/Organization
-                  </label>
-                  <input
-                    type="text"
-                    id="company"
-                    name="company"
-                    value={formData.company}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/50 focus:border-neon-blue focus:ring-2 focus:ring-neon-blue/20 transition-all duration-300"
-                    placeholder="Your company name"
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="description" className="block text-sm font-medium text-white/80 mb-2">
-                    Project Description *
-                  </label>
+
                   <textarea
                     id="description"
                     name="description"
