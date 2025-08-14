@@ -39,6 +39,7 @@ function Booking() {
                 day: 'numeric' 
               })
               setSelectedDate(dateStr)
+              setSelectedTime('') // Reset time when new date is selected
               setShowForm(true)
             }}
             className="p-2 rounded-md font-medium text-center transition-colors bg-indigo-100 text-indigo-800 cursor-pointer hover:bg-indigo-200"
@@ -120,23 +121,31 @@ function Booking() {
               
               <form onSubmit={handleSubmit} className="mt-6 space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Select Time</label>
-                  <div className="mt-2 grid grid-cols-2 gap-3">
+                  <label className="block text-sm font-medium text-gray-700 mb-3">Select Time</label>
+                  <div className="grid grid-cols-2 gap-4">
                     {availableTimes.map((time) => (
                       <button
                         key={time}
                         type="button"
-                        onClick={() => setSelectedTime(time)}
-                        className={`p-3 rounded-lg border-2 transition-colors ${
+                        onClick={() => {
+                          console.log('Time selected:', time)
+                          setSelectedTime(time)
+                        }}
+                        className={`p-4 rounded-lg border-2 font-medium text-center transition-all duration-200 ${
                           selectedTime === time
-                            ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
-                            : 'border-gray-300 hover:border-indigo-300'
+                            ? 'border-indigo-600 bg-indigo-100 text-indigo-800 shadow-md'
+                            : 'border-gray-300 bg-white text-gray-700 hover:border-indigo-400 hover:bg-indigo-50'
                         }`}
                       >
                         {time}
                       </button>
                     ))}
                   </div>
+                  {selectedTime && (
+                    <p className="mt-2 text-sm text-green-600 font-medium">
+                      ✓ Selected: {selectedTime}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Project Details</label>
