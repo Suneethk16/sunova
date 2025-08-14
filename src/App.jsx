@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Header from './components/Header'
 import Hero from './components/Hero'
+import Projects from './components/Projects'
 import About from './components/About'
 import Contact from './components/Contact'
 import Booking from './components/Booking'
@@ -14,7 +15,6 @@ function App() {
 
   const handleBookingClick = () => {
     if (!isSignedIn) {
-      alert('Please sign in to book an appointment.')
       setShowAuthModal(true)
     } else {
       setShowBooking(true)
@@ -28,39 +28,16 @@ function App() {
     if (email && password) {
       setIsSignedIn(true)
       setShowAuthModal(false)
-      alert('Signed in successfully!')
     }
   }
 
   const handleSignOut = () => {
     setIsSignedIn(false)
     setShowBooking(false)
-    alert('Signed out successfully!')
   }
 
-  useEffect(() => {
-    // Scroll animations
-    const animateElements = document.querySelectorAll('.scroll-animate')
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible')
-        }
-      })
-    }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    })
-    
-    animateElements.forEach(element => {
-      observer.observe(element)
-    })
-
-    return () => observer.disconnect()
-  }, [])
-
   return (
-    <div className="text-gray-800">
+    <div className="bg-dark-950 text-white">
       <Header 
         isSignedIn={isSignedIn} 
         onSignIn={() => setShowAuthModal(true)}
@@ -68,6 +45,7 @@ function App() {
       />
       
       <Hero onBookingClick={handleBookingClick} />
+      <Projects />
       <About />
       <Contact onBookingClick={handleBookingClick} />
       
