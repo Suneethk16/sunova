@@ -4,13 +4,13 @@ A modern React website for Sunova, built with Vite and Tailwind CSS.
 
 ## Features
 
-- 🚀 Modern React with Vite
-- 🎨 Tailwind CSS for styling
-- 📱 Responsive design
-- ✨ Smooth animations
-- 🔐 Authentication system
-- 📅 Saturday appointment booking
-- 💼 Professional business website
+- Modern React with Vite
+- Tailwind CSS for styling
+- Responsive design
+- Smooth animations
+- Authentication system
+- Appointment booking
+- Professional business website
 
 ## Getting Started
 
@@ -59,5 +59,5 @@ npm run build
 
 ---
 
-© 2024 Sunova. All rights reserved.
-CEO and Founder: Suneeth Kokala and Team
+© 2025 Sunova. All rights reserved.
+CEO and Founder: Suneeth Kokala and Swaroop Acharya
