@@ -3,8 +3,17 @@ import { useState } from 'react'
 function Booking() {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState('')
+  const [selectedTime, setSelectedTime] = useState('')
   const [showForm, setShowForm] = useState(false)
-  const [projectDetails, setProjectDetails] = useState('')
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    websiteType: '',
+    description: ''
+  })
+  
+  const availableTimes = ['10:00 AM', '12:00 PM']
 
   const renderCalendar = () => {
     const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay()
@@ -36,6 +45,14 @@ function Booking() {
                 day: 'numeric' 
               })
               setSelectedDate(dateStr)
+              setSelectedTime('') // Reset time when new date is selected
+              setFormData({ // Reset form when new date is selected
+                name: '',
+                email: '',
+                phone: '',
+                websiteType: '',
+                description: ''
+              })
               setShowForm(true)
             }}
             className="p-2 rounded-md font-medium text-center transition-colors bg-indigo-100 text-indigo-800 cursor-pointer hover:bg-indigo-200"
@@ -57,9 +74,40 @@ function Booking() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    alert(`Appointment booked for ${selectedDate}!\nProject: ${projectDetails}`)
-    setProjectDetails('')
+    if (!selectedTime) {
+      alert('Please select a time slot.')
+      return
+    }
+    const appointmentDetails = `
+Appointment Confirmed!
+
+Date: ${selectedDate}
+Time: ${selectedTime}
+Name: ${formData.name}
+Email: ${formData.email}
+Phone: ${formData.phone}
+Website Type: ${formData.websiteType}
+Description: ${formData.description}`
+    
+    alert(appointmentDetails)
+    
+    // Reset form
+    setFormData({
+      name: '',
+      email: '',
+      phone: '',
+      websiteType: '',
+      description: ''
+    })
+    setSelectedTime('')
     setShowForm(false)
+  }
+  
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }))
   }
 
   const prevMonth = () => {
@@ -107,21 +155,98 @@ function Booking() {
               <h3 className="text-2xl font-bold text-gray-900">Appointment Details</h3>
               <p className="mt-2 text-lg text-gray-600">
                 You have selected <span className="font-bold text-indigo-600">{selectedDate}</span>. 
-                Please fill out the form below to confirm your appointment.
+                Please select a time slot and fill out the form below to confirm your appointment.
               </p>
               
               <form onSubmit={handleSubmit} className="mt-6 space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Project Details</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">Select Time</label>
+                  <div className="grid grid-cols-2 gap-4">
+                    {availableTimes.map((time) => (
+                      <button
+                        key={time}
+                        type="button"
+                        onClick={() => {
+                          console.log('Time selected:', time)
+                          setSelectedTime(time)
+                        }}
+                        className={`p-4 rounded-lg border-2 font-medium text-center transition-all duration-200 ${
+                          selectedTime === time
+                            ? 'border-indigo-600 bg-indigo-100 text-indigo-800 shadow-md'
+                            : 'border-gray-300 bg-white text-gray-700 hover:border-indigo-400 hover:bg-indigo-50'
+                        }`}
+                      >
+                        {time}
+                      </button>
+                    ))}
+                  </div>
+                  {selectedTime && (
+                    <p className="mt-2 text-sm text-green-600 font-medium">
+                      ✓ Selected: {selectedTime}
+                    </p>
+                  )}
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Full Name</label>
+                    <input
+                      type="text"
+                      value={formData.name}
+                      onChange={(e) => handleInputChange('name', e.target.value)}
+                      required
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Email</label>
+                    <input
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
+                      required
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
+                    />
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Phone Number</label>
+                    <input
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e) => handleInputChange('phone', e.target.value)}
+                      required
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Website Type Required</label>
+                    <input
+                      type="text"
+                      value={formData.websiteType}
+                      onChange={(e) => handleInputChange('websiteType', e.target.value)}
+                      required
+                      placeholder="e.g., E-commerce, Portfolio, Business, Blog"
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Project Description</label>
                   <textarea
-                    value={projectDetails}
-                    onChange={(e) => setProjectDetails(e.target.value)}
+                    value={formData.description}
+                    onChange={(e) => handleInputChange('description', e.target.value)}
                     rows="4"
                     required
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
+                    placeholder="Describe your project requirements, goals, and any specific features you need..."
                   />
-                  <p className="mt-1 text-sm text-gray-500">Briefly describe your project or the questions you have.</p>
+                  <p className="mt-1 text-sm text-gray-500">Provide detailed information about your project to help us prepare for the consultation.</p>
                 </div>
+                
                 <button 
                   type="submit" 
                   className="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-indigo-700 transition-colors"

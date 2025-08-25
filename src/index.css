@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -52,10 +53,66 @@
   
   .card {
     @apply bg-white rounded-2xl shadow-lg border border-slate-200 hover:shadow-xl transition-shadow duration-300;
+=======
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+
+@layer base {
+  body {
+    @apply bg-dark-950 text-white font-sans antialiased;
+    background: radial-gradient(ellipse at top, #0f172a 0%, #020617 100%);
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+  }
+  
+  .glass-card {
+    @apply glass rounded-2xl p-6 shadow-2xl;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink bg-clip-text text-transparent;
+  }
+  
+  .gradient-border {
+    @apply relative;
+  }
+  
+  .gradient-border::before {
+    content: '';
+    @apply absolute inset-0 rounded-2xl p-[1px] bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+  }
+  
+  .btn-primary {
+    @apply px-6 py-3 bg-gradient-to-r from-neon-blue to-neon-purple text-white font-semibold rounded-xl 
+           hover:shadow-lg hover:shadow-neon-blue/25 transition-all duration-300 transform hover:scale-105;
+  }
+  
+  .btn-secondary {
+    @apply px-6 py-3 border border-white/20 text-white font-semibold rounded-xl 
+           hover:bg-white/5 hover:border-white/40 transition-all duration-300;
+  }
+  
+  .card-hover {
+    @apply transition-all duration-300 hover:transform hover:scale-105 hover:shadow-2xl;
+  }
+  
+  .text-gradient {
+    @apply bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink bg-clip-text text-transparent;
+
   }
 }
 
 @layer utilities {
+
   .text-gradient {
     @apply bg-gradient-to-r from-cyan-600 to-orange-600 bg-clip-text text-transparent;
   }
@@ -70,6 +127,23 @@
   
   .shadow-soft {
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  
+  .backface-hidden {
+    backface-visibility: hidden;
+
   }
   
   .shadow-strong {
@@ -109,7 +183,35 @@
   box-shadow: 0 0 0 2px #06b6d4;
 }
 
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-dark-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-dark-600 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-dark-500;
+}
+
+/* Selection styles */
+::selection {
+  @apply bg-neon-blue/20 text-white;
+}
+
+/* Focus styles */
+*:focus {
+  @apply outline-none ring-2 ring-neon-blue/50 ring-offset-2 ring-offset-dark-950;
+}
+
 /* Animation classes */
+
 .fade-in {
   animation: fadeIn 0.6s ease-out;
 }
@@ -136,4 +238,37 @@
     opacity: 1;
     transform: translateY(0);
   }
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+.animate-slide-down {
+  animation: slideDown 0.5s ease-out;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out;
+}
+
+/* Responsive grid */
+.grid-auto-fit {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.grid-auto-fill {
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+
 }
