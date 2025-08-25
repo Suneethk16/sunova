@@ -53,7 +53,9 @@
   
   .card {
     @apply bg-white rounded-2xl shadow-lg border border-slate-200 hover:shadow-xl transition-shadow duration-300;
-=======
+  }
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
 
 @layer base {
@@ -127,7 +129,8 @@
   
   .shadow-soft {
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-
+  }
+  
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -143,7 +146,6 @@
   
   .backface-hidden {
     backface-visibility: hidden;
-
   }
   
   .shadow-strong {
@@ -238,6 +240,7 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
 
 .animate-float {
   animation: float 6s ease-in-out infinite;
@@ -270,5 +273,4 @@
 
 .grid-auto-fill {
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-
 }
