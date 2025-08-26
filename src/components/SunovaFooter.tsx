@@ -11,7 +11,7 @@ export default function SunovaFooter() {
   ];
 
   const rightLinks = [
-    { href: "https://twitter.com/", label: "Twitter" },
+    { href: "https://x.com/SunovaDev", label: "Twitter" },
     { href: "mailto:hello@sunova.design", label: "Email" }
   ];
 

@@ -85,10 +85,10 @@ export default function SunovaHero() {
             transition={{ delay: 0.3 }}
             className="text-5xl lg:text-7xl font-bold text-white mb-6 leading-tight"
           >
-            A Dedicated Design Team for{' '}
+            Development & Design Team for{' '}
             <span className="bg-gradient-to-r from-cyan-600 to-orange-600 bg-clip-text text-transparent">
               <FlipWords 
-                words={["SaaS Leaders", "Startups", "Enterprises", "Innovators"]} 
+                words={["Startups", "Enterprises", "Innovators"]} 
                 duration={3000}
                 className="text-cyan-600"
               />
@@ -102,7 +102,7 @@ export default function SunovaHero() {
             transition={{ delay: 0.4 }}
             className="text-xl lg:text-2xl text-white/60 mb-12 max-w-3xl mx-auto leading-relaxed"
           >
-            We don't just design, we solve your brand's biggest challenges.
+            Beyond design: turning challenges into opportunities for your brand
           </motion.p>
 
           {/* CTA Buttons */}
@@ -112,7 +112,12 @@ export default function SunovaHero() {
             transition={{ delay: 0.5 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
           >
-            <button className="bg-gradient-to-r from-cyan-600 to-orange-600 text-white px-10 py-5 rounded-full font-semibold text-xl hover:from-cyan-700 hover:to-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center space-x-3">
+            <button className="bg-gradient-to-r from-cyan-600 to-orange-600 text-white px-10 py-5 rounded-full font-semibold text-xl hover:from-cyan-700 hover:to-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center space-x-3"
+            onClick={() => {
+              const el = document.getElementById('pricing');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+            >
               <span>View Plans & Pricing</span>
               <ArrowRight className="w-5 h-5" />
             </button>

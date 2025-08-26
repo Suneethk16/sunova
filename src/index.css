@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,6 +7,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    font-size: 15px;
   }
   
   body {
@@ -15,6 +17,10 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+}
+
+@media (min-width: 640px) {
+  html { font-size: 16px; }
 }
 
 :root {
@@ -55,8 +61,6 @@
     @apply bg-white rounded-2xl shadow-lg border border-slate-200 hover:shadow-xl transition-shadow duration-300;
   }
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   body {
@@ -273,4 +277,25 @@
 
 .grid-auto-fill {
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+@keyframes confetti-burst {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 6px;
+  height: 10px;
+  border-radius: 2px;
+  will-change: transform, opacity;
+  animation: confetti-burst 1.2s ease-out forwards;
+  pointer-events: none;
 }

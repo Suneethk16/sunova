@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-const CAL_URL = 'https://cal.com/swaroop-codes-yirggk/30min'
+const CAL_URL = 'https://cal.com/sunova-agency/30min'
 
 export default function CalModal() {
   const [open, setOpen] = useState(false)

@@ -1,49 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { GlareCard } from './ui/glare-card';
 import { ExternalLink, Eye } from 'lucide-react';
 
 export default function Portfolio() {
+  const [imageLoaded, setImageLoaded] = useState<Record<number, boolean>>({});
   const projects = [
     {
       title: 'TechCorp Dashboard',
       category: 'Web Design',
-      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&h=400&fit=crop',
+      image: '/project_aerothon.jpg',
       description: 'Modern SaaS dashboard with conversion-optimized design.',
       tags: ['React', 'Dashboard', 'SaaS']
     },
     {
       title: 'InnovateLab Mobile App',
       category: 'Mobile Design',
-      image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=500&h=400&fit=crop',
+      image: '/project_edutrack.jpg',
       description: 'Intuitive mobile experience for innovative product discovery.',
       tags: ['iOS', 'Android', 'UX/UI']
     },
     {
       title: 'FutureFlow Branding',
       category: 'Brand Identity',
-      image: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=500&h=400&fit=crop',
+      image: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=1200&h=900&q=80',
       description: 'Complete brand system for a forward-thinking fintech company.',
       tags: ['Logo', 'Branding', 'Fintech']
     },
     {
       title: 'DataViz Platform',
       category: 'Web Development',
-      image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=500&h=400&fit=crop',
+      image: 'https://images.unsplash.com/photo-1517148815978-75f6acaaf32c?auto=format&fit=crop&w=1200&h=900&q=80',
       description: 'Interactive data visualization platform built with Framer.',
       tags: ['Framer', 'Data', 'Interactive']
     },
     {
       title: 'CloudSync Landing',
       category: 'Landing Page',
-      image: 'https://images.unsplash.com/photo-1557804506-669a67965ba3?w=500&h=400&fit=crop',
+      image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&h=900&q=80',
       description: 'High-converting landing page for cloud storage service.',
       tags: ['Landing Page', 'Conversion', 'Cloud']
     },
     {
       title: 'SmartScale Packaging',
       category: 'Product Design',
-      image: 'https://images.unsplash.com/photo-1607082349566-1873421752f?w=500&h=400&fit=crop',
+      image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1200&h=900&q=80',
       description: 'Eye-catching packaging design for smart scale product.',
       tags: ['Packaging', 'Product', 'IoT']
     }
@@ -83,10 +84,15 @@ export default function Portfolio() {
                 <GlareCard className="relative overflow-hidden">
                   {/* Project Image */}
                   <div className="relative h-64 overflow-hidden">
+                    {!imageLoaded[index] && (
+                      <div className="absolute inset-0 bg-white/10 animate-pulse" />
+                    )}
                     <img
                       src={project.image}
                       alt={project.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      loading="lazy"
+                      onLoad={() => setImageLoaded(prev => ({ ...prev, [index]: true }))}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     
@@ -129,11 +135,7 @@ export default function Portfolio() {
                       ))}
                     </div>
 
-                    {/* View Project Button */}
-                    <button className="w-full bg-gradient-to-r from-cyan-600 to-orange-600 text-white py-3 px-4 rounded-lg font-medium hover:from-cyan-700 hover:to-orange-700 transition-all duration-300 flex items-center justify-center space-x-2">
-                      <span>View Project</span>
-                      <ExternalLink className="w-4 h-4" />
-                    </button>
+                    
                   </div>
                 </GlareCard>
               </motion.div>
