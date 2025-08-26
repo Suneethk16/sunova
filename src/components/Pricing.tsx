@@ -1,9 +1,67 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Check, Star } from 'lucide-react';
 // import { Button } from './ui/button';
 
 export default function Pricing() {
+  const pricingRef = useRef<HTMLDivElement | null>(null);
+  const [hasCelebrated, setHasCelebrated] = useState(false);
+
+  useEffect(() => {
+    const el = pricingRef.current;
+    if (!el || hasCelebrated) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !hasCelebrated) {
+            triggerConfetti(entry.target as HTMLElement);
+            setHasCelebrated(true);
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [hasCelebrated]);
+
+  const triggerConfetti = (container: HTMLElement) => {
+    const confettiContainer = document.createElement('div');
+    confettiContainer.style.position = 'absolute';
+    confettiContainer.style.inset = '0';
+    confettiContainer.style.pointerEvents = 'none';
+    confettiContainer.style.overflow = 'hidden';
+    confettiContainer.style.zIndex = '50';
+
+    const colors = ['#06b6d4', '#f97316', '#22c55e', '#eab308', '#a855f7', '#ef4444'];
+    const numPieces = 80;
+
+    for (let i = 0; i < numPieces; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.backgroundColor = colors[i % colors.length];
+      const startX = Math.random() * 100;
+      const dx = (Math.random() * 2 - 1) * 250 + 'px';
+      const dy = (Math.random() * 1 + 0.8) * 320 + 'px';
+      const delay = Math.random() * 0.2;
+      const scale = 0.6 + Math.random() * 0.8;
+      piece.style.left = `calc(${startX}% - 3px)`;
+      piece.style.top = '10%';
+      piece.style.setProperty('--dx', dx);
+      piece.style.setProperty('--dy', dy);
+      piece.style.animationDelay = `${delay}s`;
+      piece.style.transform = `scale(${scale})`;
+      confettiContainer.appendChild(piece);
+    }
+
+    container.appendChild(confettiContainer);
+    setTimeout(() => {
+      confettiContainer.remove();
+    }, 1600);
+  };
+
   const [planToggles, setPlanToggles] = useState<Record<number, boolean>>({
     0: false,
     1: false,
@@ -84,7 +142,7 @@ export default function Pricing() {
   ];
 
   return (
-    <section id="pricing" className="py-20 relative overflow-hidden">
+    <section id="pricing" ref={pricingRef as any} className="py-20 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 opacity-30">
         <div className="absolute top-20 left-10 w-64 h-64 bg-gradient-to-br from-blue-400/20 to-cyan-400/20 rounded-full blur-3xl" />

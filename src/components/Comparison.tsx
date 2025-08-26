@@ -82,44 +82,94 @@ export default function Comparison() {
 
           {/* Comparison Table */}
           <div className="bg-white/10 backdrop-blur-md rounded-2xl shadow-xl border border-white/15 overflow-hidden text-white">
-            {/* Table Header */}
-            <div className="grid grid-cols-4 bg-white/5 border-b border-white/10">
-              <div className="p-6 font-semibold text-white">Features</div>
-              <div className="p-6 text-center">
-                <div className="bg-gradient-to-r from-cyan-600 to-orange-600 text-white px-4 py-2 rounded-full text-sm font-medium inline-flex items-center">
-                  <Star className="w-4 h-4 mr-2" />
-                  Sunova
+            {/* Desktop Table */}
+            <div className="hidden md:block">
+              {/* Table Header */}
+              <div className="grid grid-cols-4 bg-white/5 border-b border-white/10">
+                <div className="p-6 font-semibold text-white">Features</div>
+                <div className="p-6 text-center">
+                  <div className="bg-gradient-to-r from-cyan-600 to-orange-600 text-white px-4 py-2 rounded-full text-sm font-medium inline-flex items-center">
+                    <Star className="w-4 h-4 mr-2" />
+                    Sunova
+                  </div>
                 </div>
+                <div className="p-6 text-center font-semibold text-white">Full-Time Designer</div>
+                <div className="p-6 text-center font-semibold text-white">Other Agencies</div>
               </div>
-              <div className="p-6 text-center font-semibold text-white">Full-Time Designer</div>
-              <div className="p-6 text-center font-semibold text-white">Other Agencies</div>
+
+              {/* Table Body */}
+              <div className="divide-y divide-white/10">
+                {comparisonData.map((row, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="grid grid-cols-4 hover:bg-white/5 transition-colors duration-200"
+                  >
+                    <div className="p-6 font-medium text-white/80 border-r border-white/10">
+                      {row.feature}
+                    </div>
+                    <div className="p-6 text-center text-white font-medium">
+                      {row.sunova}
+                    </div>
+                    <div className="p-6 text-center text-white/70">
+                      {row.fullTime}
+                    </div>
+                    <div className="p-6 text-center text-white/70">
+                      {row.agencies}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
 
-            {/* Table Body */}
-            <div className="divide-y divide-white/10">
-              {comparisonData.map((row, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="grid grid-cols-4 hover:bg-white/5 transition-colors duration-200"
-                >
-                  <div className="p-6 font-medium text-white/80 border-r border-white/10">
-                    {row.feature}
+            {/* Mobile Table with Horizontal Scroll */}
+            <div className="md:hidden">
+              <div className="overflow-x-auto">
+                <div className="min-w-[600px]">
+                  {/* Table Header */}
+                  <div className="grid grid-cols-4 bg-white/5 border-b border-white/10">
+                    <div className="p-4 font-semibold text-white text-sm">Features</div>
+                    <div className="p-4 text-center">
+                      <div className="bg-gradient-to-r from-cyan-600 to-orange-600 text-white px-3 py-1.5 rounded-full text-xs font-medium inline-flex items-center">
+                        <Star className="w-3 h-3 mr-1" />
+                        Sunova
+                      </div>
+                    </div>
+                    <div className="p-4 text-center font-semibold text-white text-sm">Full-Time Designer</div>
+                    <div className="p-4 text-center font-semibold text-white text-sm">Other Agencies</div>
                   </div>
-                  <div className="p-6 text-center text-white font-medium">
-                    {row.sunova}
+
+                  {/* Table Body */}
+                  <div className="divide-y divide-white/10">
+                    {comparisonData.map((row, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                        className="grid grid-cols-4 hover:bg-white/5 transition-colors duration-200"
+                      >
+                        <div className="p-4 font-medium text-white/80 border-r border-white/10 text-sm">
+                          {row.feature}
+                        </div>
+                        <div className="p-4 text-center text-white font-medium text-sm">
+                          {row.sunova}
+                        </div>
+                        <div className="p-4 text-center text-white/70 text-sm">
+                          {row.fullTime}
+                        </div>
+                        <div className="p-4 text-center text-white/70 text-sm">
+                          {row.agencies}
+                        </div>
+                      </motion.div>
+                    ))}
                   </div>
-                  <div className="p-6 text-center text-white/70">
-                    {row.fullTime}
-                  </div>
-                  <div className="p-6 text-center text-white/70">
-                    {row.agencies}
-                  </div>
-                </motion.div>
-              ))}
+                </div>
+              </div>
             </div>
           </div>
 
