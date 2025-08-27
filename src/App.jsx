@@ -7,7 +7,7 @@ import Portfolio from './components/Portfolio';
 import Comparison from './components/Comparison';
 import Pricing from './components/Pricing';
 import FAQ from './components/FAQ';
-import Contact from './components/Contact';
+import TeamSection from './components/ui/team';
 import SunovaFooter from './components/SunovaFooter';
 import { HeroGeometric } from './components/ui/shape-landing-hero';
 import CalModal from './components/CalModal';
@@ -25,6 +25,7 @@ function App() {
       <Portfolio />
       <Comparison />
       <Pricing />
+      <TeamSection />
       <FAQ />
       <SunovaFooter />
     </div>
