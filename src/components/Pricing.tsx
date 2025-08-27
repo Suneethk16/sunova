@@ -80,8 +80,8 @@ export default function Pricing() {
       name: 'Redesign',
       description: 'Transform your existing website with modern design',
       price: {
-        oneTime: 399,
-        yearly: 599
+        oneTime: 349,
+        yearly: 549
       },
       features: [
         'Complete website redesign',
@@ -100,8 +100,8 @@ export default function Pricing() {
       name: 'From Scratch Design',
       description: 'Create a stunning website from the ground up',
       price: {
-        oneTime: 799,
-        yearly: 1199
+        oneTime: 749,
+        yearly: 1099
       },
       features: [
         'Custom website design',
@@ -121,8 +121,8 @@ export default function Pricing() {
       name: 'Full Stack Site',
       description: 'Complete website with advanced functionality',
       price: {
-        oneTime: 1299,
-        yearly: 1899
+        oneTime: 1199,
+        yearly: 1799
       },
       features: [
         'Custom website design',
@@ -194,38 +194,40 @@ export default function Pricing() {
                     ? 'border-cyan-300/30 hover:border-cyan-300/50' 
                     : 'border-white/15 hover:border-white/30'
                 }`}>
-                  {/* Toggle in Right Corner */}
-                  <div className="absolute top-6 right-6">
-                    <button
-                      onClick={() => togglePlan(index)}
-                      className={`relative inline-flex h-8 w-20 items-center rounded-full transition-colors duration-300 ${
-                        planToggles[index] 
-                          ? 'bg-gradient-to-r from-cyan-500 to-orange-500' 
-                          : 'bg-slate-200'
-                      }`}
-                    >
-                      <span
-                        className={`z-10 inline-block h-5 w-5 transform rounded-full bg-white shadow-lg transition-transform duration-300 ${
-                          planToggles[index] ? 'translate-x-12' : 'translate-x-1'
-                        }`}
-                      />
-                      <span
-                        className={`absolute text-[11px] font-semibold pointer-events-none ${
-                          planToggles[index]
-                            ? 'left-2 text-white'
-                            : 'right-2 text-slate-700'
+                  {/* Toggle in Right Corner (hidden for Full Stack Site) */}
+                  {plan.name !== 'Full Stack Site' && (
+                    <div className="absolute top-6 right-6">
+                      <button
+                        onClick={() => togglePlan(index)}
+                        className={`relative inline-flex h-8 w-20 items-center rounded-full transition-colors duration-300 ${
+                          planToggles[index] 
+                            ? 'bg-gradient-to-r from-cyan-500 to-orange-500' 
+                            : 'bg-slate-200'
                         }`}
                       >
-                        {planToggles[index] ? 'Dev' : 'Design'}
-                      </span>
-                    </button>
-                  </div>
+                        <span
+                          className={`z-10 inline-block h-5 w-5 transform rounded-full bg-white shadow-lg transition-transform duration-300 ${
+                            planToggles[index] ? 'translate-x-12' : 'translate-x-1'
+                          }`}
+                        />
+                        <span
+                          className={`absolute text-[11px] font-semibold pointer-events-none ${
+                            planToggles[index]
+                              ? 'left-2 text-white'
+                              : 'right-2 text-slate-700'
+                          }`}
+                        >
+                          {planToggles[index] ? 'Dev' : 'Design'}
+                        </span>
+                      </button>
+                    </div>
+                  )}
 
                   {/* Plan Header */}
                   <div className="text-center mt-5 mb-8 pt-4">
                     <h3 className="text-2xl font-bold text-white mb-2">
                       {plan.name}
-                      {planToggles[index] && (
+                      {plan.name !== 'Full Stack Site' && planToggles[index] && (
                         <span className="text-cyan-600 ml-2">+ Dev</span>
                       )}
                     </h3>
@@ -234,9 +236,9 @@ export default function Pricing() {
                     {/* Price */}
                     <div className="mb-2">
                       <span className="text-4xl font-bold text-white">
-                        ${planToggles[index] ? plan.price.yearly : plan.price.oneTime}
+                        ${plan.name === 'Full Stack Site' ? plan.price.oneTime : (planToggles[index] ? plan.price.yearly : plan.price.oneTime)}
                       </span>
-                      {planToggles[index] && (
+                      {plan.name !== 'Full Stack Site' && planToggles[index] && (
                         <span className="text-white/60 text-lg line-through ml-2">
                           ${plan.price.oneTime}
                         </span>
