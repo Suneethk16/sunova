@@ -266,7 +266,7 @@ export default function Pricing() {
                       Book a Call
                     </button>
                     <a
-                      href="https://twitter.com/"
+                      href="https://x.com/Sunova229835"
                       target="_blank"
                       rel="noreferrer"
                       className="w-full sm:flex-1 inline-flex items-center justify-center border-2 border-white/30 text-white rounded-full font-semibold hover:bg-white/10 hover:border-white/50 transition-all duration-300 h-12 sm:h-14 px-5 sm:px-7 text-sm sm:text-base leading-none"
