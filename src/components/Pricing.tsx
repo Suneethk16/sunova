@@ -89,7 +89,7 @@ export default function Pricing() {
         'SEO optimization',
         'Content migration',
         '3 rounds of revisions',
-        'Launch support',
+        'Post-launch assistance',
         '30 days of support'
       ],
       highlight: false,
@@ -109,7 +109,7 @@ export default function Pricing() {
         'SEO optimization',
         'Content creation',
         '5 rounds of revisions',
-        'Launch support',
+        'Post-launch assistance',
         '60 days of support',
         'Custom animations'
       ],

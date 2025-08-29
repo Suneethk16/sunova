@@ -62,21 +62,19 @@ export default function SunovaHero() {
       {/* Hero Content */}
       <div className="relative z-10 container mx-auto px-6 lg:px-8 pt-20 lg:pt-32">
         <div className="max-w-6xl mx-auto text-center">
-          {/* Launch Day Tooltip */}
+          {/* Availability Badge */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2 }}
-            className="relative inline-block mb-8 group"
+            className="relative inline-block mb-8"
           >
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-medium shadow-lg">
-              🚀 Launch Day!
-            </div>
-            {/* Tooltip */}
-            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-black text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap z-20">
-              Today is Launch Day!
-              {/* Arrow */}
-              <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-black"></div>
+            <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white font-medium shadow-lg">
+              <span className="relative mr-2 inline-flex items-center justify-center">
+                <span className="absolute inline-flex h-2 w-2 rounded-full bg-green-500 opacity-75 animate-ping"></span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
+              </span>
+              <span className="text-sm text-white/90 tracking-wide">Available for New Projects</span>
             </div>
           </motion.div>
 
