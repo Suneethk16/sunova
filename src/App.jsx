@@ -11,6 +11,7 @@ import TeamSection from './components/ui/team';
 import SunovaFooter from './components/SunovaFooter';
 import { HeroGeometric } from './components/ui/shape-landing-hero';
 import CalModal from './components/CalModal';
+import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
       <TeamSection />
       <FAQ />
       <SunovaFooter />
+      <Analytics />
     </div>
   );
 }
