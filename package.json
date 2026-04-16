@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@paper-design/shaders-react": "^0.0.46",
     "@radix-ui/react-slot": "^1.2.3",
     "@react-three/drei": "^9.99.5",

@@ -1,4 +1,39 @@
+/**
+ * Contact form — EmailJS integration
+ *
+ * ── ONE-TIME SETUP (5 minutes) ────────────────────────────────────────────
+ *
+ * 1. Create a free account at https://emailjs.com
+ *
+ * 2. Add an Email Service:
+ *    Dashboard → Email Services → Add New Service
+ *    → Choose Gmail → connect agencysunova@gmail.com
+ *    → Name the service "sunova_service" → Save
+ *    → Copy the Service ID  (looks like "service_xxxxxxx")
+ *
+ * 3. Create an Email Template:
+ *    Dashboard → Email Templates → Create New Template
+ *    → Set "To Email" = agencysunova@gmail.com
+ *    → Subject:  New enquiry from {{from_name}} - Sunova
+ *    → Body:
+ *        Name:    {{from_name}}
+ *        Email:   {{from_email}}
+ *
+ *        Message:
+ *        {{message}}
+ *    → Save  → Copy the Template ID  (looks like "template_xxxxxxx")
+ *
+ * 4. Get your Public Key:
+ *    Dashboard → Account → General → Public Key
+ *    (looks like "xxxxxxxxxxxxxxxxxxxxxx")
+ *
+ * 5. Paste the three values into the EMAILJS_* constants below.
+ *
+ * ─────────────────────────────────────────────────────────────────────────
+ */
+
 import React, { useState } from 'react';
+import emailjs from '@emailjs/browser';
 import { motion } from 'framer-motion';
 import {
   Mail,
@@ -8,6 +43,12 @@ import {
   AlertCircle,
   ArrowRight,
 } from 'lucide-react';
+
+// ─── EmailJS credentials — paste your values here ────────────────────────────
+// These are PUBLIC client-side keys, safe to commit.
+const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';   // e.g. "service_abc123"
+const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';  // e.g. "template_xyz789"
+const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';   // e.g. "AbCdEfGhIjKlMnOpQrSt"
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -55,10 +96,6 @@ function validate(v: FormValues): FieldErrors {
 const EMPTY: FormValues = { name: '', email: '', message: '' };
 const EMPTY_TOUCHED = { name: false, email: false, message: false };
 
-// Web3Forms — client-side public key, safe to bundle.
-// Submissions are forwarded to agencysunova@gmail.com.
-const WEB3FORMS_KEY = 'dd86b790-30cc-4d18-a3f4-4427406b200d';
-
 // ─── Component ───────────────────────────────────────────────────────────────
 
 export default function Contact() {
@@ -91,7 +128,6 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Mark every field as touched so inline errors appear instantly.
     setTouched({ name: true, email: true, message: true });
     const errs = validate(form);
     setErrors(errs);
@@ -101,32 +137,24 @@ export default function Contact() {
     setApiError('');
 
     try {
-      const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          access_key: WEB3FORMS_KEY,
-          subject:    `New enquiry from ${form.name.trim()} - Sunova website`,
-          name:       form.name.trim(),
-          email:      form.email.trim(),    // shown in email body
-          replyto:    form.email.trim(),    // sets Reply-To header
-          message:    form.message.trim(),
-          botcheck:   '',                   // honeypot — leave empty
-        }),
-      });
+      const templateParams = {
+        from_name:  form.name.trim(),
+        from_email: form.email.trim(),
+        message:    form.message.trim(),
+        reply_to:   form.email.trim(),
+      };
 
-      const data = await response.json();
+      const result = await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        { publicKey: EMAILJS_PUBLIC_KEY }
+      );
 
-      if (!response.ok || !data.success) {
-        throw new Error(
-          data.message ?? 'Submission failed. Please try again.'
-        );
+      if (result.status !== 200) {
+        throw new Error(`EmailJS returned status ${result.status}: ${result.text}`);
       }
 
-      // Real success — form will be reset.
       setStatus('success');
       setForm(EMPTY);
       setTouched(EMPTY_TOUCHED);
@@ -135,7 +163,7 @@ export default function Contact() {
       const msg =
         err instanceof Error
           ? err.message
-          : 'Network error. Please check your connection and try again.';
+          : 'Something went wrong. Please try again or email us directly.';
       setApiError(msg);
       setStatus('error');
     }
@@ -243,7 +271,8 @@ export default function Contact() {
                   <motion.div
                     initial={{ opacity: 0, y: -6 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="flex items-start gap-3 bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 mb-6"
+                    className="flex items-start gap-3 bg-red-500/10 border border-red-500/30
+                               rounded-xl px-4 py-3 mb-6"
                   >
                     <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
                     <p className="text-red-300 text-sm leading-relaxed">{apiError}</p>
