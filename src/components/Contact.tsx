@@ -46,9 +46,9 @@ import {
 
 // ─── EmailJS credentials — paste your values here ────────────────────────────
 // These are PUBLIC client-side keys, safe to commit.
-const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';   // e.g. "service_abc123"
-const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';  // e.g. "template_xyz789"
-const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';   // e.g. "AbCdEfGhIjKlMnOpQrSt"
+const EMAILJS_SERVICE_ID  = 'service_ga6qnwx';
+const EMAILJS_TEMPLATE_ID = 'template_9oh9weo';
+const EMAILJS_PUBLIC_KEY  = 'Q79C5gOxhITm6el2o';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
