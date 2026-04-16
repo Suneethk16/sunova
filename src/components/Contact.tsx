@@ -1,16 +1,3 @@
-/**
- * Contact.tsx
- *
- * Email delivery: Web3Forms (https://web3forms.com)
- *   - Free, no backend required, works on Vercel / any static host.
- *   - Get your access key in 30 seconds:
- *       1. Go to https://web3forms.com
- *       2. Enter your email address → click "Create Access Key"
- *       3. Copy the key from the email they send you
- *       4. Paste it in .env:  VITE_WEB3FORMS_KEY=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
- *   - Every form submission is forwarded to that email address — no server needed.
- */
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
@@ -44,6 +31,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function validate(v: FormValues): FieldErrors {
   const e: FieldErrors = {};
+
   if (!v.name.trim())
     e.name = 'Name is required.';
   else if (v.name.trim().length < 2)
@@ -65,22 +53,19 @@ function validate(v: FormValues): FieldErrors {
 // ─── Constants ───────────────────────────────────────────────────────────────
 
 const EMPTY: FormValues = { name: '', email: '', message: '' };
-const EMPTY_TOUCHED      = { name: false, email: false, message: false };
+const EMPTY_TOUCHED = { name: false, email: false, message: false };
 
-// Web3Forms public endpoint — no backend required.
-const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
-
-// Set VITE_WEB3FORMS_KEY in your .env file.
-// See: https://web3forms.com  (free, takes 30 seconds)
-const ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string | undefined;
+// Web3Forms — client-side public key, safe to bundle.
+// Submissions are forwarded to agencysunova@gmail.com.
+const WEB3FORMS_KEY = 'dd86b790-30cc-4d18-a3f4-4427406b200d';
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
 export default function Contact() {
-  const [form, setForm]     = useState<FormValues>(EMPTY);
-  const [errors, setErrors] = useState<FieldErrors>({});
+  const [form, setForm]       = useState<FormValues>(EMPTY);
+  const [errors, setErrors]   = useState<FieldErrors>({});
   const [touched, setTouched] = useState(EMPTY_TOUCHED);
-  const [status, setStatus] = useState<SubmitStatus>('idle');
+  const [status, setStatus]   = useState<SubmitStatus>('idle');
   const [apiError, setApiError] = useState('');
 
   // ── Handlers ─────────────────────────────────────────────────────────────
@@ -99,66 +84,49 @@ export default function Contact() {
     e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const name = e.target.name as keyof FormValues;
-    const nextTouched = { ...touched, [name]: true };
-    setTouched(nextTouched);
+    setTouched((prev) => ({ ...prev, [name]: true }));
     setErrors(validate(form));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Touch all fields so every error becomes visible immediately.
+    // Mark every field as touched so inline errors appear instantly.
     setTouched({ name: true, email: true, message: true });
     const errs = validate(form);
     setErrors(errs);
-    if (Object.keys(errs).length > 0) return; // client-side guard
+    if (Object.keys(errs).length > 0) return;
 
     setStatus('loading');
     setApiError('');
 
     try {
-      // ── Missing key: warn developer in console, still show success ──────
-      if (!ACCESS_KEY) {
-        console.warn(
-          '[Contact] VITE_WEB3FORMS_KEY is not set.\n' +
-          'Get a free key at https://web3forms.com then add it to .env:\n' +
-          'VITE_WEB3FORMS_KEY=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
-        );
-        // Simulate success in development so the UI can be tested visually.
-        await new Promise((r) => setTimeout(r, 800));
-        setStatus('success');
-        setForm(EMPTY);
-        setTouched(EMPTY_TOUCHED);
-        return;
-      }
-
-      // ── Real submission via Web3Forms ────────────────────────────────────
-      const payload = {
-        access_key: ACCESS_KEY,
-        subject:    `New enquiry from ${form.name.trim()} — Sunova website`,
-        from_name:  'Sunova Website',
-        name:       form.name.trim(),
-        email:      form.email.trim(),
-        message:    form.message.trim(),
-        // Honeypot — Web3Forms uses this to filter bots
-        botcheck:   '',
-      };
-
-      const response = await fetch(WEB3FORMS_ENDPOINT, {
-        method:  'POST',
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Accept:         'application/json',
+          Accept: 'application/json',
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject:    `New enquiry from ${form.name.trim()} - Sunova website`,
+          name:       form.name.trim(),
+          email:      form.email.trim(),    // shown in email body
+          replyto:    form.email.trim(),    // sets Reply-To header
+          message:    form.message.trim(),
+          botcheck:   '',                   // honeypot — leave empty
+        }),
       });
 
       const data = await response.json();
 
       if (!response.ok || !data.success) {
-        throw new Error(data.message ?? 'Submission failed. Please try again.');
+        throw new Error(
+          data.message ?? 'Submission failed. Please try again.'
+        );
       }
 
+      // Real success — form will be reset.
       setStatus('success');
       setForm(EMPTY);
       setTouched(EMPTY_TOUCHED);
@@ -167,7 +135,7 @@ export default function Contact() {
       const msg =
         err instanceof Error
           ? err.message
-          : 'Network error — please check your connection and try again.';
+          : 'Network error. Please check your connection and try again.';
       setApiError(msg);
       setStatus('error');
     }
@@ -181,14 +149,16 @@ export default function Contact() {
     setApiError('');
   };
 
-  // ── Helper: per-field class ───────────────────────────────────────────────
+  // ── Field class helper ────────────────────────────────────────────────────
 
   const fieldCls = (name: keyof FormValues) =>
-    `w-full px-4 py-3 bg-white/5 border rounded-xl text-white placeholder-white/30 text-sm
-     focus:outline-none focus:ring-1 transition-colors
-     ${touched[name] && errors[name]
-       ? 'border-red-500/60 focus:border-red-500/80 focus:ring-red-500/20'
-       : 'border-white/15 focus:border-blue-500/60 focus:ring-blue-500/30'}`;
+    [
+      'w-full px-4 py-3 bg-white/5 border rounded-xl text-white placeholder-white/30 text-sm',
+      'focus:outline-none focus:ring-1 transition-colors',
+      touched[name] && errors[name]
+        ? 'border-red-500/60 focus:border-red-500/80 focus:ring-red-500/20'
+        : 'border-white/15 focus:border-blue-500/60 focus:ring-blue-500/30',
+    ].join(' ');
 
   // ── Render ────────────────────────────────────────────────────────────────
 
@@ -228,7 +198,7 @@ export default function Contact() {
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
 
-          {/* ── Contact form (3/5 cols) ──────────────────────────────────── */}
+          {/* ── Contact form — 3 cols ──────────────────────────────────────── */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -237,7 +207,7 @@ export default function Contact() {
             className="lg:col-span-3 bg-white/5 border border-white/10 rounded-2xl p-8"
           >
 
-            {/* ── Success state ────────────────────────────────────────── */}
+            {/* Success state */}
             {status === 'success' ? (
               <div className="flex flex-col items-center justify-center py-12 text-center">
                 <motion.div
@@ -249,9 +219,7 @@ export default function Contact() {
                 >
                   <CheckCircle className="w-10 h-10 text-green-400" />
                 </motion.div>
-                <h3 className="text-2xl font-bold text-white mb-3">
-                  Message Sent Successfully!
-                </h3>
+                <h3 className="text-2xl font-bold text-white mb-3">Message Sent!</h3>
                 <p className="text-white/60 mb-8 max-w-sm leading-relaxed">
                   Thanks for reaching out. We'll review your message and get back to you
                   within 24 hours.
@@ -266,7 +234,7 @@ export default function Contact() {
               </div>
 
             ) : (
-              /* ── Form ─────────────────────────────────────────────────── */
+              /* Form */
               <>
                 <h3 className="text-xl font-bold text-white mb-6">Send us a message</h3>
 
@@ -275,16 +243,12 @@ export default function Contact() {
                   <motion.div
                     initial={{ opacity: 0, y: -6 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="flex items-start gap-3 bg-red-500/10 border border-red-500/30
-                               rounded-xl px-4 py-3 mb-6"
+                    className="flex items-start gap-3 bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 mb-6"
                   >
                     <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
                     <p className="text-red-300 text-sm leading-relaxed">{apiError}</p>
                   </motion.div>
                 )}
-
-                {/* Honeypot (hidden, catches bots) */}
-                <input type="checkbox" name="botcheck" className="hidden" readOnly />
 
                 <form onSubmit={handleSubmit} noValidate className="space-y-5">
 
@@ -358,7 +322,9 @@ export default function Contact() {
                           {errors.message}
                         </p>
                       ) : <span />}
-                      <p className={`text-xs ml-auto tabular-nums ${form.message.length > 4800 ? 'text-red-400' : 'text-white/30'}`}>
+                      <p className={`text-xs ml-auto tabular-nums ${
+                        form.message.length > 4800 ? 'text-red-400' : 'text-white/30'
+                      }`}>
                         {form.message.length}/5000
                       </p>
                     </div>
@@ -395,7 +361,7 @@ export default function Contact() {
             )}
           </motion.div>
 
-          {/* ── Side panel (2/5 cols) ────────────────────────────────────── */}
+          {/* ── Side panel — 2 cols ───────────────────────────────────────── */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -415,7 +381,8 @@ export default function Contact() {
             <a
               href="mailto:agencysunova@gmail.com"
               className="group flex items-start gap-4 bg-white/5 border border-white/10
-                         hover:border-blue-500/40 rounded-2xl p-5 transition-all duration-300 hover:bg-white/[0.08]"
+                         hover:border-blue-500/40 rounded-2xl p-5 transition-all duration-300
+                         hover:bg-white/[0.08]"
             >
               <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl
                               flex items-center justify-center flex-shrink-0
@@ -436,7 +403,8 @@ export default function Contact() {
               target="_blank"
               rel="noreferrer"
               className="group flex items-start gap-4 bg-white/5 border border-white/10
-                         hover:border-green-500/40 rounded-2xl p-5 transition-all duration-300 hover:bg-white/[0.08]"
+                         hover:border-green-500/40 rounded-2xl p-5 transition-all duration-300
+                         hover:bg-white/[0.08]"
             >
               <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl
                               flex items-center justify-center flex-shrink-0
