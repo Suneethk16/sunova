@@ -1,33 +1,25 @@
 import React from 'react';
-import SunovaHero from './components/SunovaHero';
-import Benefits from './components/Benefits';
-import Process from './components/Process';
-import ServicesShowcase from './components/ServicesShowcase';
-import Portfolio from './components/Portfolio';
-import Comparison from './components/Comparison';
-import Pricing from './components/Pricing';
-import FAQ from './components/FAQ';
-import TeamSection from './components/ui/team';
-import SunovaFooter from './components/SunovaFooter';
 import { HeroGeometric } from './components/ui/shape-landing-hero';
-import CalModal from './components/CalModal';
+import SunovaHero from './components/SunovaHero';
+import About from './components/About';
+import ServicesShowcase from './components/ServicesShowcase';
+import Process from './components/Process';
+import Testimonials from './components/Testimonials';
+import Contact from './components/Contact';
+import SunovaFooter from './components/SunovaFooter';
 import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   return (
     <div className="App">
-      {/* Global geometric animated background */}
+      {/* Global animated background */}
       <HeroGeometric mode="background" />
-      <CalModal />
       <SunovaHero />
-      <Benefits />
-      <Process />
+      <About />
       <ServicesShowcase />
-      <Portfolio />
-      <Comparison />
-      <Pricing />
-      <TeamSection />
-      <FAQ />
+      <Process />
+      <Testimonials />
+      <Contact />
       <SunovaFooter />
       <Analytics />
     </div>
