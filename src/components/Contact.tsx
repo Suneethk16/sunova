@@ -44,8 +44,7 @@ import {
   ArrowRight,
 } from 'lucide-react';
 
-// ─── EmailJS credentials — paste your values here ────────────────────────────
-// These are PUBLIC client-side keys, safe to commit.
+// ─── EmailJS credentials ──────────────────────────────────────────────────────
 const EMAILJS_SERVICE_ID  = 'service_ga6qnwx';
 const EMAILJS_TEMPLATE_ID = 'template_9oh9weo';
 const EMAILJS_PUBLIC_KEY  = 'Q79C5gOxhITm6el2o';
@@ -125,9 +124,9 @@ export default function Contact() {
     setErrors(validate(form));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  // Called directly by the button's onClick — no dependency on form submit event
+  const sendMessage = async () => {
+    // Mark every field touched so validation errors become visible
     setTouched({ name: true, email: true, message: true });
     const errs = validate(form);
     setErrors(errs);
@@ -137,8 +136,12 @@ export default function Contact() {
     setApiError('');
 
     try {
+      emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
       const templateParams = {
+        name:       form.name.trim(),
         from_name:  form.name.trim(),
+        email:      form.email.trim(),
         from_email: form.email.trim(),
         message:    form.message.trim(),
         reply_to:   form.email.trim(),
@@ -148,25 +151,35 @@ export default function Contact() {
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
         templateParams,
-        { publicKey: EMAILJS_PUBLIC_KEY }
+        { publicKey: EMAILJS_PUBLIC_KEY },
       );
 
       if (result.status !== 200) {
-        throw new Error(`EmailJS returned status ${result.status}: ${result.text}`);
+        throw new Error(`EmailJS error ${result.status}: ${result.text}`);
       }
 
       setStatus('success');
       setForm(EMPTY);
       setTouched(EMPTY_TOUCHED);
 
-    } catch (err) {
-      const msg =
-        err instanceof Error
-          ? err.message
-          : 'Something went wrong. Please try again or email us directly.';
+    } catch (err: unknown) {
+      let msg = 'Something went wrong. Please email us at agencysunova@gmail.com';
+      if (err instanceof Error) {
+        msg = err.message;
+      } else if (typeof err === 'string') {
+        msg = err;
+      } else if (typeof err === 'object' && err !== null && 'text' in err) {
+        msg = String((err as { text: unknown }).text);
+      }
       setApiError(msg);
       setStatus('error');
     }
+  };
+
+  // Keep a form-submit handler for keyboard Enter support
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    sendMessage();
   };
 
   const handleReset = () => {
@@ -361,7 +374,8 @@ export default function Contact() {
 
                   {/* Submit */}
                   <button
-                    type="submit"
+                    type="button"
+                    onClick={sendMessage}
                     disabled={status === 'loading'}
                     className="w-full flex items-center justify-center gap-2.5
                                bg-gradient-to-r from-blue-600 to-purple-600
