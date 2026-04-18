@@ -27,7 +27,7 @@ const navSections = [
     heading: 'Contact',
     links: [
       { label: 'sunovasolutions@gmail.com', href: 'mailto:sunovasolutions@gmail.com', external: true },
-      { label: 'WhatsApp', href: 'https://wa.me/message/sunova', external: true },
+      
     ],
   },
 ];
