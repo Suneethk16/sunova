@@ -3,9 +3,9 @@ import { motion } from 'framer-motion'
 import emailjs from '@emailjs/browser'
 import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react'
 
-const EMAILJS_SERVICE_ID  = 'service_ga6qnwx';
+const EMAILJS_SERVICE_ID = 'service_ga6qnwx';
 const EMAILJS_TEMPLATE_ID = 'template_9oh9weo';
-const EMAILJS_PUBLIC_KEY  = 'Q79C5gOxhITm6el2o';
+const EMAILJS_PUBLIC_KEY = 'Q79C5gOxhITm6el2o';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -36,13 +36,13 @@ export default function Contact() {
       emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY })
 
       const templateParams = {
-        name:       formData.name.trim(),
-        from_name:  formData.name.trim(),
-        email:      formData.email.trim(),
+        name: formData.name.trim(),
+        from_name: formData.name.trim(),
+        email: formData.email.trim(),
         from_email: formData.email.trim(),
-        subject:    formData.subject.trim(),
-        message:    formData.message.trim(),
-        reply_to:   formData.email.trim(),
+        subject: formData.subject.trim(),
+        message: formData.message.trim(),
+        reply_to: formData.email.trim(),
       }
 
       const result = await emailjs.send(
@@ -65,7 +65,7 @@ export default function Contact() {
 
     } catch (err: unknown) {
       setIsSubmitting(false)
-      let msg = 'Something went wrong. Please email us at agencysunova@gmail.com'
+      let msg = 'Something went wrong. Please email us at sunovasolutions@gmail.com'
       if (err instanceof Error) msg = err.message
       else if (typeof err === 'string') msg = err
       else if (typeof err === 'object' && err !== null && 'text' in err)
@@ -83,7 +83,7 @@ export default function Contact() {
     {
       icon: Mail,
       title: "Email",
-      value: "agencysunova@gmail.com",
+      value: "sunovasolutions@gmail.com",
       description: "Send us a message anytime"
     },
     {

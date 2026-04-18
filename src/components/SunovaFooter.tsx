@@ -26,7 +26,7 @@ const navSections = [
   {
     heading: 'Contact',
     links: [
-      { label: 'agencysunova@gmail.com', href: 'mailto:agencysunova@gmail.com', external: true },
+      { label: 'sunovasolutions@gmail.com', href: 'mailto:sunovasolutions@gmail.com', external: true },
       { label: 'WhatsApp', href: 'https://wa.me/message/sunova', external: true },
     ],
   },
@@ -36,7 +36,7 @@ const socials = [
   { icon: Twitter, label: 'Twitter', href: 'https://x.com/Sunova229835' },
   { icon: Linkedin, label: 'LinkedIn', href: '#' },
   { icon: Github, label: 'GitHub', href: '#' },
-  { icon: Mail, label: 'Email', href: 'mailto:agencysunova@gmail.com' },
+  { icon: Mail, label: 'Email', href: 'mailto:sunovasolutions@gmail.com' },
 ];
 
 export default function SunovaFooter() {

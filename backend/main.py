@@ -125,7 +125,7 @@ def _send_notification_email(payload: ContactRequest) -> None:
     smtp_user = os.getenv("SMTP_USER", "")
     smtp_password = os.getenv("SMTP_PASSWORD", "")
     from_email = os.getenv("SMTP_FROM_EMAIL", smtp_user)
-    to_email = os.getenv("RECIPIENT_EMAIL", "agencysunova@gmail.com")
+    to_email = os.getenv("RECIPIENT_EMAIL", "sunovasolutions@gmail.com")
 
     msg = MIMEMultipart("alternative")
     msg["Subject"] = f"[Sunova] New enquiry from {payload.name}"
