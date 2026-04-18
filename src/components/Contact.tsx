@@ -272,10 +272,8 @@ export default function Contact() {
                 className="btn-primary w-full"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => {
-                  const el = document.getElementById('contact')
-                  if (el) el.querySelector('input')?.focus()
-                }}
+                data-cal-link="sunova-capy88"
+                data-cal-origin="https://cal.com"
               >
                 Schedule Consultation
               </motion.button>
