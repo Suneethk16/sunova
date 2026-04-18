@@ -6,7 +6,7 @@ const testimonials = [
   {
     name: 'Sarah Mitchell',
     role: 'Co-Founder & CEO',
-    company: 'NovaPay',
+    company: 'ZovaPay',
     avatar: 'SM',
     avatarColor: 'from-blue-500 to-cyan-500',
     rating: 5,
@@ -15,7 +15,7 @@ const testimonials = [
   {
     name: 'James Okonkwo',
     role: 'Head of Engineering',
-    company: 'Clover Analytics',
+    company: 'Clever Analytics',
     avatar: 'JO',
     avatarColor: 'from-purple-500 to-pink-500',
     rating: 5,
@@ -24,7 +24,7 @@ const testimonials = [
   {
     name: 'Priya Nair',
     role: 'Founder',
-    company: 'Shopscape',
+    company: 'Shopscaze',
     avatar: 'PN',
     avatarColor: 'from-emerald-500 to-teal-500',
     rating: 5,
