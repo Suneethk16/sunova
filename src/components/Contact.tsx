@@ -87,15 +87,9 @@ export default function Contact() {
       description: "Send us a message anytime"
     },
     {
-      icon: Phone,
-      title: "Phone",
-      value: "+1 (555) 123-4567",
-      description: "Mon-Fri from 8am to 6pm"
-    },
-    {
       icon: MapPin,
       title: "Location",
-      value: "San Francisco, CA",
+      value: "Berlin, Germany",
       description: "Available worldwide remotely"
     }
   ]
